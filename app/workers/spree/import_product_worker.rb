@@ -51,7 +51,7 @@ module Spree
           if taxon
             taxons << taxon
           else
-            taxon = taxonomy.root.children.create!(name: child)
+            taxon = taxonomy.root.children.create!(name: child, taxonomy_id: taxonomy.id)
           end
           taxons << taxon
         else
