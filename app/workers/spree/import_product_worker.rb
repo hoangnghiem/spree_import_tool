@@ -68,7 +68,7 @@ module Spree
                                           sku: get_value(row_hash, mappers, 'Product SKU'),
                                           price: get_value(row_hash, mappers, 'Product Price').to_f,
                                           description: get_value(row_hash, mappers, 'Product Description'),
-                                          available_on: Time.zone.now,
+                                          available_on: Time.zone.now - 2.days,
                                           shipping_category_id: Spree::ShippingCategory.first.id )
       end
 
