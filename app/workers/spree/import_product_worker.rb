@@ -63,12 +63,10 @@ module Spree
 
     def make_product(row_hash, mappers)
       product = Spree::Product.joins(:master).where("spree_variants.sku = ?", get_value(row_hash, mappers, 'Product SKU')).first
-      if product
-        puts 'Do nothing'
-      else
+      unless product
         product = Spree::Product.create!( name: get_value(row_hash, mappers, 'Product Name'),
                                           sku: get_value(row_hash, mappers, 'Product SKU'),
-                                          price: get_value(row_hash, mappers, 'Product Price'),
+                                          price: get_value(row_hash, mappers, 'Product Price').to_f,
                                           description: get_value(row_hash, mappers, 'Product Description'),
                                           available_on: Time.zone.now,
                                           shipping_category_id: Spree::ShippingCategory.first.id )
@@ -87,7 +85,7 @@ module Spree
       end
 
       unless product_has_options?(product, options)
-        variant = product.variants.build( price: get_value(row_hash, mappers, 'Product Price'),
+        variant = product.variants.build( price: get_value(row_hash, mappers, 'Product Price').to_f,
                                           weight: get_value(row_hash, mappers, 'Product Weight'),
                                           height: get_value(row_hash, mappers, 'Product Height'),
                                           width: get_value(row_hash, mappers, 'Product Width'),
