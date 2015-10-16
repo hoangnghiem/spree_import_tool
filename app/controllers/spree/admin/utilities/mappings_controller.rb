@@ -11,6 +11,7 @@ class Spree::Admin::Utilities::MappingsController < Spree::Admin::BaseController
 
   def create
     if @source.update_attributes(source_params)
+      Spree::ImportProductWorker.perform_async(@source.id)
       flash[:success] = 'System started import processing.'
       redirect_to run_admin_utilities_source_path(@source)
     else
