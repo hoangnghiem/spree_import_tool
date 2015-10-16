@@ -1,0 +1,35 @@
+// Placeholder manifest file.
+// the installer will append this file to the app vendored assets here: 'vendor/assets/stylesheets/spree/backend/all.css'
+
+.import-steps {
+  .step {
+    border: 1px solid #C0C0C0;
+    border-right: none;
+    color: #CCC;
+
+    span.glyphicon {
+      display: block;
+      font-size: 40px;
+      padding: 15px 0 8px 0;
+    }
+
+    span.step-title {
+      display: block;
+      padding-bottom: 15px;
+    }
+  }
+
+  .step:first-child {
+    border-radius: 5px 0 0 5px;
+  }
+  .step:last-child {
+    border-radius: 0 5px 5px 0;
+    border: 1px solid #C0C0C0;
+  }
+  .step.active {
+    color: #000;
+  }
+  .step.done {
+    color: lighten(#5cb85c, 3%);
+  }
+}

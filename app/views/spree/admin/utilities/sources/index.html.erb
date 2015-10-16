@@ -1,0 +1,33 @@
+<% content_for :page_title do %>Import Products<% end %>
+
+<div class="container-fluid">
+  <div class="row import-steps">
+    <div class="col-md-4 step text-center active">
+      <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+      <span class="step-title">Upload Import File</span>
+    </div>
+    <div class="col-md-4 step text-center">
+      <span class="glyphicon glyphicon-random" aria-hidden="true"></span>
+      <span class="step-title">Mapping</span>
+    </div>
+    <div class="col-md-4 step text-center">
+      <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+      <span class="step-title">Run</span>
+    </div>
+  </div>
+</div>
+
+<div class="well">
+  <h2 class="text-center">Upload Import File</h2>
+  <h4 class="text-center"><u>Instruction</u></h4>
+  <p class="text-center">Download <%= link_to 'Sample File' %>, fill out data and upload modified file.</p>
+
+  <h4 class="text-center"><u>Upload</u></h4>
+  <%= form_for @source, url: admin_utilities_sources_path do |f| %>
+    <%= render :partial => 'spree/admin/shared/error_messages', :locals => { :target => @source} %>
+    <%= f.field_container :file, :class => ['form-group'] do %>
+      <%= f.file_field :file, style: 'margin: 0 auto;' %>
+    <% end %>
+    <p class="text-center"><%= f.submit 'Upload', class: 'btn btn-success' %></p>
+  <% end %>
+</div>

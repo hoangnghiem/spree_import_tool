@@ -1,6 +1,9 @@
 module SpreeImportTool
   class Engine < Rails::Engine
     require 'spree/core'
+    require 'sidekiq'
+    require 'sidekiq-status'
+
     isolate_namespace Spree
     engine_name 'spree_import_tool'
 

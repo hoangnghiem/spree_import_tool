@@ -1,0 +1,46 @@
+<% content_for :page_title do %>Import Products<% end %>
+
+<div class="container-fluid">
+  <div class="row import-steps">
+    <div class="col-md-4 step text-center done">
+      <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+      <span class="step-title">Upload Import File</span>
+    </div>
+    <div class="col-md-4 step text-center active">
+      <span class="glyphicon glyphicon-random" aria-hidden="true"></span>
+      <span class="step-title">Mapping</span>
+    </div>
+    <div class="col-md-4 step text-center">
+      <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+      <span class="step-title">Run</span>
+    </div>
+  </div>
+</div>
+
+<h2 class="text-center">Map the Columns to System fields</h2>
+<h4 class="text-center"><u>Instruction</u></h4>
+<p class="text-center">Select correct System Field that corresponding to your import field and review carefully before running.</p>
+<%= form_for @source, url: admin_utilities_source_mapping_path(@source), method: :post do |f| %>
+  <%= render :partial => 'spree/admin/shared/error_messages', :locals => { :target => @source} %>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Header Field</th>
+        <th>Row 1 Preview</th>
+        <th>System Field</th>
+        <th>Product Identifier</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= f.fields_for :mappers do |ff| %>
+        <tr>
+          <td><%= ff.hidden_field :user_field %><%= ff.object.user_field %></td>
+          <td><%= ff.hidden_field :sample %><code><%= ff.object.sample %></code></td>
+          <td><%= ff.collection_select :system_field, Spree::Import::Mapper::SYSTEM_FIELD_OPTIONS, :to_s, :to_s, include_blank: true %></td>
+          <td><label><%= f.radio_button :identifier_field, ff.object.user_field %></label></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <p class="text-center"><%= f.submit 'Save & Run', class: 'btn btn-success' %></p>
+<% end %>
