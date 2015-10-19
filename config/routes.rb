@@ -7,6 +7,7 @@ Spree::Core::Engine.routes.draw do
           resource :mapping, only: [:show, :create]
         end
       end
+      resources :import_product_images, only: [:index, :create]
     end
   end
 end
