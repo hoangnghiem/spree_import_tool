@@ -1,0 +1,10 @@
+<% content_for :page_title do %>Test Background Job<% end %>
+
+<%= form_for :test_background_job do |f| %>
+  <div class="form-group">
+    <%= f.label :email, 'Email' %>
+    <%= f.email_field :email, class: 'form-control' %>
+    <p class="help-block">An email will be sent to given email address from the background job.</p>
+  </div>
+  <p><%= f.submit 'Send', class: 'btn btn-success' %></p>
+<% end %>

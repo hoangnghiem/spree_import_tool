@@ -8,6 +8,7 @@ Spree::Core::Engine.routes.draw do
         end
       end
       resources :import_product_images, only: [:index, :create]
+      resource :test_background_job, only: [:show, :create]
     end
   end
 end
