@@ -62,6 +62,9 @@ module Spree
     end
 
     def make_product(row_hash, mappers)
+      puts "================================="
+      puts "make_product #{row_hash}"
+      puts Spree::Config[:currency]
       product = Spree::Product.joins(:master).where("spree_variants.sku = ?", get_value(row_hash, mappers, 'Product SKU')).first
       unless product
         product = Spree::Product.create!( name: get_value(row_hash, mappers, 'Product Name'),
@@ -79,11 +82,26 @@ module Spree
 
       # make variants
       options = []
+      option_values = []
       get_value(row_hash, mappers, 'Product Option', true).each do |option_name, option_value|
         value = option_value.kind_of?(Numeric) ? option_value.to_i.to_s : option_value.strip
         options << {name: option_name, value: value}
+
+        option_type = Spree::OptionType.where(name: option_name).first_or_initialize do |o|
+          o.presentation = option_name
+          o.save!
+        end
+
+        option_value = Spree::OptionValue.where(option_type_id: option_type.id, name: value).first_or_initialize do |o|
+          o.presentation = value
+          o.save!
+        end
+
+        option_values << option_value
       end
 
+      # puts "options = #{options}"
+      # puts "product_has_options = #{product_has_options?(product, options)}"
       unless product_has_options?(product, options)
         variant = product.variants.build( price: get_value(row_hash, mappers, 'Product Price').to_f,
                                           weight: get_value(row_hash, mappers, 'Product Weight'),
@@ -105,14 +123,21 @@ module Spree
       row_hash.slice(*matched_names)
     end
 
-    def product_has_options?(product, options)
-      return false unless product.has_variants?
+    def product_has_options?(product, option_values)
+      # return false unless product.has_variants?
 
-      scoped = Spree::Product.where(id: product.id)
-      options.each do |option|
-        scopes = scoped.with_option_value(option[:name], option[:value])
+      product.variants.each do |variant|
+        if (variant.option_values - option_values).size == 0
+          return true
+        end
       end
-      scoped.any?
+
+      # scoped = Spree::Product.where(id: product.id)
+      # options.each do |option|
+      #   scoped = scoped.with_option_value(option[:name], option[:value])
+      # end
+      # puts "SQL = #{scoped.to_sql}"
+      # scoped.any?
     end
   end
 end
