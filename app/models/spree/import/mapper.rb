@@ -8,6 +8,7 @@ class Spree::Import::Mapper < ActiveRecord::Base
     'Category',
     'Product Name',
     'Product SKU',
+    'Variant SKU',
     'Product Description',
     'Product Price',
     'Product Sale Price',
