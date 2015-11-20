@@ -100,7 +100,7 @@ module Spree
       variant.save!
 
       stock_item = variant.stock_items.first
-      stock_item.count_on_hand = get_value(row_hash, mappers, 'In Stock Count').to_i
+      stock_item.count_on_hand = get_value(row_hash, mappers, 'Product In Stock Count').to_i
       stock_item.save!
 
       product
