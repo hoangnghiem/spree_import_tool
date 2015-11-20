@@ -69,7 +69,7 @@ module Spree
       unless product
         product = Spree::Product.new( sku: get_value(row_hash, mappers, 'Product SKU'),
                                       shipping_category_id: Spree::ShippingCategory.find_by_name(get_value(row_hash, mappers, 'Shipping Category')).id,
-                                      tax_category_id: Spree::TaxCategory.find_by_name(get_value(row_hash, mappers, 'Tax Category')).id,
+                                      tax_category_id: Spree::TaxCategory.where('name LIKE ?', '%' + get_value(row_hash, mappers, 'Tax Category') + '%').first.id,
                                       available_on: Time.zone.now - 2.days)
       end
       product.name = get_value(row_hash, mappers, 'Product Name')
