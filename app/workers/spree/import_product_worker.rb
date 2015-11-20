@@ -99,9 +99,10 @@ module Spree
       variant.options = options
       variant.save!
 
-      stock_item = variant.stock_items.first
-      stock_item.count_on_hand = get_value(row_hash, mappers, 'Product In Stock Count').to_i
-      stock_item.save!
+      stock_location = Spree::StockLocation.first
+      stock_movement = stock_location.stock_movements.build(quantity: get_value(row_hash, mappers, 'Product In Stock Count').to_i)
+      stock_movement.stock_item = stock_location.set_up_stock_item(variant)
+      stock_movement.save!
 
       product
     end
