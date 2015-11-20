@@ -68,10 +68,10 @@ module Spree
       product = Spree::Product.joins(:master).where("spree_variants.sku = ?", get_value(row_hash, mappers, 'Product SKU')).first
       unless product
         product = Spree::Product.new( sku: get_value(row_hash, mappers, 'Product SKU'),
-                                      shipping_category_id: Spree::ShippingCategory.first.id,
+                                      shipping_category_id: Spree::ShippingCategory.find_by_name(get_value(row_hash, mappers, 'Shipping Category')).id,
+                                      tax_category_id: Spree::TaxCategory.find_by_name(get_value(row_hash, mappers, 'Tax Category')).id,
                                       available_on: Time.zone.now - 2.days)
       end
-      puts product.inspect
       product.name = get_value(row_hash, mappers, 'Product Name')
       product.price = get_value(row_hash, mappers, 'Product Price').to_f
       product.description = get_value(row_hash, mappers, 'Product Description')
