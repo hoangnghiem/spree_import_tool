@@ -84,12 +84,22 @@ module Spree
 
       # make variants
       options = []
+      sku = get_value(row_hash, mappers, 'Product SKU').split('-').first
       get_value(row_hash, mappers, 'Product Option', true).each do |option_name, option_value|
         value = option_value.kind_of?(Numeric) ? option_value.to_i.to_s : option_value.strip
         options << {name: option_name, value: value}
+        str = value.gsub(/[^0-9A-Za-z]/, '')
+        if option_name == 'Size'
+          sku += "-#{str[0..1]}"
+        else
+          sku << "-#{str[0]}#{str[-1]}"
+        end
       end
 
-      sku = get_value(row_hash, mappers, 'Variant SKU')
+      sku = sku.upcase
+
+      puts "SKU = #{sku}"
+      # sku = get_value(row_hash, mappers, 'Variant SKU')
       variant = product.variants.find_or_initialize_by(sku: sku)
       variant.price = get_value(row_hash, mappers, 'Product Price').to_f
       variant.weight = get_value(row_hash, mappers, 'Product Weight')
@@ -99,10 +109,13 @@ module Spree
       variant.options = options
       variant.save!
 
-      stock_location = Spree::StockLocation.first
-      stock_movement = stock_location.stock_movements.build(quantity: get_value(row_hash, mappers, 'Product In Stock Count').to_i)
-      stock_movement.stock_item = stock_location.set_up_stock_item(variant)
-      stock_movement.save!
+      in_stock = get_value(row_hash, mappers, 'Product In Stock Count').to_i
+      if in_stock > 0
+        stock_location = Spree::StockLocation.first
+        stock_movement = stock_location.stock_movements.build(quantity: in_stock)
+        stock_movement.stock_item = stock_location.set_up_stock_item(variant)
+        stock_movement.save!
+      end
 
       product
     end
