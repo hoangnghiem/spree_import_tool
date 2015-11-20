@@ -20,5 +20,7 @@ class Spree::Import::Mapper < ActiveRecord::Base
     'Product In Stock Count',
     'Product Option',
     'Product Property',
+    'Tax Category',
+    'Shipping Category'
   ]
 end
