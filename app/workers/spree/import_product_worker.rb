@@ -84,22 +84,12 @@ module Spree
 
       # make variants
       options = []
-      sku = get_value(row_hash, mappers, 'Product SKU').split('-').first
       get_value(row_hash, mappers, 'Product Option', true).each do |option_name, option_value|
         value = option_value.kind_of?(Numeric) ? option_value.to_i.to_s : option_value.strip
         options << {name: option_name, value: value}
-        str = value.gsub(/[^0-9A-Za-z]/, '')
-        if option_name == 'Size'
-          sku += "-#{str[0..1]}"
-        else
-          sku << "-#{str[0]}#{str[-1]}"
-        end
       end
 
-      sku = sku.upcase
-
-      puts "SKU = #{sku}"
-      # sku = get_value(row_hash, mappers, 'Variant SKU')
+      sku = get_value(row_hash, mappers, 'Variant SKU')
       variant = product.variants.find_or_initialize_by(sku: sku)
       variant.price = get_value(row_hash, mappers, 'Product Price').to_f
       variant.weight = get_value(row_hash, mappers, 'Product Weight')
