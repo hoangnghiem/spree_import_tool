@@ -20,7 +20,7 @@
 <div class="well">
   <h2 class="text-center">Upload Import File</h2>
   <h4 class="text-center"><u>Instruction</u></h4>
-  <p class="text-center">Download <%= link_to 'Sample File' %>, fill out data and upload modified file.</p>
+  <p class="text-center">Download <%= link_to 'Sample File', '/product_import_sample.xlsx' %>, fill out data and upload modified file.</p>
 
   <h4 class="text-center"><u>Upload</u></h4>
   <%= form_for @source, url: admin_utilities_sources_path do |f| %>
