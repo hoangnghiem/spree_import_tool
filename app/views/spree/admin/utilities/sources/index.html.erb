@@ -1,6 +1,12 @@
 <% content_for :page_title do %>Import Products<% end %>
 
 <div class="container-fluid">
+  <div class="alert alert-warning">
+    <h4>Warning:</h4>
+    <p>- Failure to correctly configure the import template will result in product catalogue being corrupted and loss of service to your customers for at least 48 hours. Any doubts don't use import.</p>
+    <p>- Value of <i>"In stock count"</i> column will be aggregated to existing stock value. Leave it empty if you don't want to change stock quantity.</p>
+  </div>
+
   <div class="row import-steps">
     <div class="col-md-4 step text-center active">
       <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
