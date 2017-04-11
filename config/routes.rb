@@ -9,6 +9,9 @@ Spree::Core::Engine.routes.draw do
       end
       resources :import_product_images, only: [:index, :create]
       resource :test_background_job, only: [:show, :create]
+      resource :exportings, only: [:show] do
+        post :export_images
+      end
     end
   end
 end
